@@ -56,7 +56,7 @@ if ($sTemplateSync < $sBefore)
     foreach ($sTemplateList->data as $sTemplate)
 	{
 	  $sTemplate = new Template($sTemplate['id']);
-	
+
 	  try {
 		$sTemplateData = array_change_key_case(get_headers($sTemplate->sURL, TRUE));
 		if (!isset($sTemplateData['content-length']) || empty($sTemplateData['content-length']))
@@ -66,7 +66,7 @@ if ($sTemplateSync < $sBefore)
 	  } catch (Exception $e) {
 		$sDisable = 1;
 	  }
-	  
+
 	  if (($sTemplate->sDisabled == 0) && ($sDisable == 1))
 	  {
 		$sTemplate->uDisabled = 1;
@@ -100,11 +100,11 @@ if ($sServerList = $database->CachedQuery('SELECT * FROM servers', array()))
 	  echo "Dispatched 5 uptime checkers...\n";
 	  sleep(5);
 	}
-	
+
 	$sServer = new Server($sServer['id']);
 	$sCommandList .= "screen -dm -S uptracker bash -c 'cd /var/feathur/feathur/scripts/;php pull_server.php {$sServer->sId} >> /var/feathur/data/status.log;exit;';";
 	$sTotal++;
-		
+
 	$sBefore = time() - 300;
 	$sUptime = $sServer->sLastCheck;
 	$sStatus = $sServer->sStatus;
@@ -142,7 +142,7 @@ if ($sServerList = $database->CachedQuery('SELECT * FROM servers', array()))
 
 $sOldStatistics = time() - 432000;
 $sStatistics = $database->prepare('DELETE FROM `statistics` WHERE timestamp < :OldStatistics');
-$sStatistics->bindParam(':OldStatistics', $sOldStatistics, PDO::PARAM_INT);  
+$sStatistics->bindParam(':OldStatistics', $sOldStatistics, PDO::PARAM_INT);
 $sStatistics->execute();
 
 /*
@@ -151,7 +151,7 @@ $sStatistics->execute();
 
 $sOldHistory = time() - 604800;
 $sHistory = $database->prepare('DELETE FROM `history` WHERE timestamp < :OldHistory');
-$sHistory->bindParam(':OldHistory', $sOldHistory, PDO::PARAM_INT);  
+$sHistory->bindParam(':OldHistory', $sOldHistory, PDO::PARAM_INT);
 $sHistory->execute();
 
 /*
@@ -174,15 +174,15 @@ if (($sLastReset->sValue < $sTimeAgo) && ($sDayToday == 1))
  */
 
 echo "License update...\n";
-if ($sSlaves = $database->CachedQuery('SELECT * FROM servers', array())) $sCountSlaves = count($sSlaves->data);
+/*if ($sSlaves = $database->CachedQuery('SELECT * FROM servers', array())) $sCountSlaves = count($sSlaves->data);
 $sHost	= Core::GetSetting('panel_url');
 $sURL	= "http://check.feathur.com/api.php?host={$sHost->sValue}&slaves={$sCountSlaves}";
 $sCurl	= curl_init();
 curl_setopt($sCurl, CURLOPT_URL, $sURL);
 curl_setopt($sCurl, CURLOPT_RETURNTRANSFER, 1);
 $sLicense = json_decode(curl_exec($sCurl), true);
-curl_close($sCurl);
-Core::UpdateSetting('license', ($sLicense['type']=='success' ? 1 : 0));
+curl_close($sCurl);*/
+Core::UpdateSetting('license', 1);
 
 
 /*
@@ -215,6 +215,4 @@ if ($sLastUpdateCheck < $sTimeAgo)
 /*
  * Release lock files
  */
-
 $sLock = $sLocalSSH->exec("rm -rf /var/feathur/data/bandwidth.lock");
-

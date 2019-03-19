@@ -98,7 +98,7 @@ service php-fpm stop
 status " "
 status "Installing and configuring Feathur..."
 cd ~
-git clone -b develop https://github.com/BlueVM/Feathur.git /var/feathur
+git clone https://github.com/XAOS-Interactive/Feathur.git /var/feathur
 mkdir -p /var/feathur/data/{templates/{openvz,kvm},keys}
 touch /var/feathur/data/log.txt
 mkdir /home/root/
@@ -147,7 +147,7 @@ mkdir /usr/ssl
 cd /usr/ssl
 openssl genrsa -out feathur.key 1024
 openssl rsa -in feathur.key -out feathur.pem
-openssl req -new -key feathur.pem -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN=www.feathur.com" -out feathur.csr
+openssl req -new -key feathur.pem -subj "/C=US/ST=Michigan/L=Sterling Heights/O=IT/CN=feathur.net" -out feathur.csr
 openssl x509 -req -days 365 -in feathur.csr -signkey feathur.pem -out feathur.crt
 
 rm -rf /etc/nginx/conf.d/*
